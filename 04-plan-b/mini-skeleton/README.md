@@ -1,11 +1,19 @@
-# Mini FastAPI Skeleton — for Plan Mode demo (Block 2)
+# Mini FastAPI Skeleton — last-ditch fallback for Block 2
 
-Tiny FastAPI project that **intentionally has only one endpoint**. Plan Mode should plan adding `/health` + test against this.
+> **Default Block 2 flow does NOT use this folder.** Block 2 normally creates an empty `plan-mode-demo/` live on stage and lets Plan Mode bootstrap from zero — that's the more honest, more pedagogically valuable version.
+>
+> This skeleton exists **only** as a worst-case fallback: if Copilot is completely down and Plan Mode produces nothing at all, copy these files into a folder, open in VS Code, and *talk through* what Plan Mode *would* have produced — using `plan-mode-output.png` (the screenshot you captured in Phase A4) as visual aid.
 
-## Setup
+## Tiny FastAPI app with one endpoint
+
+A `/hello` endpoint that returns `{"message": "Hello"}`. Nothing else.
+
+## Fallback setup (only if needed during the demo)
 
 ```bash
+mkdir plan-mode-demo
 cd plan-mode-demo
+# Copy main.py + requirements.txt from this folder
 uv venv
 .venv\Scripts\activate    # Windows
 uv pip install -r requirements.txt
@@ -13,13 +21,7 @@ uv run uvicorn main:app --reload
 # → http://localhost:8000/hello
 ```
 
-## Usage in the demo
-
-1. VS Code opens the project (`$HOME\demos\plan-mode-demo`)
-2. Copilot Chat → choose **Plan** mode in the dropdown
-3. Paste prompt from `02-prompts.md` §1 (in the session files folder)
-4. Plan comes back, **no** code is written (that is exactly the point)
-
 ## Why so small?
 
-So Plan Mode delivers a complete plan in 60–90 sec and the audience can **fully grasp** the plan. Larger tasks here would be risky for the 25-minute demo.
+So that even in the worst case, the speaker can show a credibly minimal starting point and the audience still grasps the Plan Mode concept in ~60 seconds of narration over the prepared screenshot.
+

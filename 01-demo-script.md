@@ -14,7 +14,7 @@ gantt
     1. Hello + what's coming           :b1, 00:00, 90s
 
     section Plan Mode
-    2. Plan Mode live (FastAPI /hello) :b2, after b1, 210s
+    2. Plan Mode live (bootstrap FastAPI from zero) :b2, after b1, 210s
 
     section Bridge
     3. Moment vs. over time            :b3, after b2, 120s
@@ -63,53 +63,64 @@ gantt
 ## 🎬 Block 2 — Plan Mode live (1:30 – 5:00) · 3.5 min
 
 **Setup ahead of time:**
-- VS Code opened in the prepared repo `plan-mode-demo/` (see setup checklist)
-- The repo contains a tiny FastAPI app with a `/hello` endpoint
-- Copilot Chat is open (Ctrl+Alt+I or Cmd+Ctrl+I)
+- Terminal open in `$HOME\demos\` (the parent folder — no demo repo prepared)
+- VS Code closed, or on the welcome screen
+- Copilot Chat ready in either case (Ctrl+Alt+I after you open VS Code)
 - Model set to **Claude Sonnet 4.5** or **GPT-5** (most stable Plan Mode outputs)
+
+> 💡 **Why create the folder live?** The audience sees the workflow start from a truly empty state — no hidden setup, no "I prepared this earlier". Plan Mode's job is to think *before* code exists, and now they watch that happen on a real empty folder.
 
 **Step by step:**
 
-**(a) Show setup — 30 sec**
-> "This is a tiny FastAPI app with one endpoint. We want to add a `/health` endpoint with a test — a minimal task, but we're approaching it in a structured way."
+**(a) Create the folder live — 30 sec**
 
-Briefly open `main.py`, scroll, close.
+In the terminal:
+```powershell
+mkdir plan-mode-demo
+cd plan-mode-demo
+code .
+```
 
-**(b) Show Plan Mode toggle — 20 sec**
+VS Code opens on the empty folder.
 
-In Copilot Chat at the top, switch the **Agent/Ask dropdown** to **"Plan"**.
+> "Empty folder. Nothing pre-made. Imagine you're starting a new microservice from scratch."
 
-> "Here is the difference: instead of Agent — which edits directly — we switch to **Plan**. Plan Mode only has read tools, cannot change anything, and is trained to return a structured plan."
+**(b) Switch Copilot Chat to Plan Mode — 20 sec**
 
-**(c) Enter prompt — 1 min** *(Prompt → see `02-prompts.md` §1)*
+Open Copilot Chat (Ctrl+Alt+I). In the mode dropdown at the top, switch from **Agent** to **Plan**.
+
+> "Three modes here: Ask is chat-only, Agent edits files, Plan is read-only and returns a structured plan. We want Plan — *think before code*."
+
+**(c) Enter prompt — 30 sec** *(see `02-prompts.md` §1)*
 
 ```
 Plan only. Do not edit any files.
 
-We have a FastAPI URL shortener (currently just /hello).
-Plan how to add:
+This folder is empty. Plan how to bootstrap a tiny FastAPI service:
 - a GET /health endpoint returning {"status": "ok"}
 - one pytest test that verifies status 200 and the JSON body
+- use uv for dependency management
 
-Give me: files to touch, exact test cases, and risks.
+Give me: files to create, exact test cases, and risks.
 ```
 
 **(d) Interpret response — 1.5 min**
 
-While Copilot is typing, keep talking (DON'T wait silently!):
+While Plan Mode is streaming, keep talking (DON'T wait silently!):
 
-> "Plan Mode does not write code here. It gives me **files to touch**, **test cases**, and **risks** or assumptions — the review material I want before coding."
+> "Plan Mode does not write code here. It gives me **files to create**, **exact test cases**, and **risks** or assumptions — the review material I want before any keystroke hits a `.py` file."
 
 When the response is there:
 - Read 3 bullet points from the plan
 - Point to the handoff button ("Implement Plan" or switch to Agent Mode)
 
-> "I could now click 'Implement' directly — the plan is passed along as context. But next we’ll make that intent persist in the repo."
+> "I could click 'Implement Plan' now and Agent Mode would take this plan as context and create every file. But notice: this plan lives in the chat. Close the window and it's gone. That's the bridge to what comes next."
 
 **Cue card:**
-- ⏱ By 4:30 the plan must be there. Otherwise: show prepared screenshot ("this is what it usually looks like") and move on.
-- 🚨 **If the Plan Mode dropdown is missing:** VS Code Insiders or latest Stable needed. Fallback: show a short screenshot from `$HOME\demos\backup\plan-mode-output.png` (create screenshot beforehand in Phase A4!).
-- 🎯 Goal: audience sees "chat can plan first, then let it code".
+- ⏱ By 4:30 the plan must be there. If Plan Mode is still streaming, jump to Block 3 mid-stream — the audience already saw the point.
+- 🚨 **If the Plan Mode dropdown is missing:** VS Code Insiders or latest Stable needed. Fallback: use Ask mode with the same prompt prefixed by "Don't write code — outline the plan only."
+- 🚨 **If Copilot is fully down:** show the prepared screenshot from `$HOME\demos\backup\plan-mode-output.png` (created in Phase A4).
+- 🎯 Goal: audience sees "chat can plan first, then let it code" — and "this plan is ephemeral".
 
 ---
 

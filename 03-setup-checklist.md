@@ -21,14 +21,7 @@
 
 ### A2 — Prepare demo repos (45 min)
 
-> Run this section from `$HOME\demos\`; it is the parent folder for both demo repos and the `shortly-stage-5` backup worktree.
-
-**Repo 1: `plan-mode-demo/` (for Block 2)**
-
-- [ ] Copy mini FastAPI skeleton from `04-plan-b/mini-skeleton/` into `$HOME\demos\plan-mode-demo\`
-- [ ] `cd plan-mode-demo && uv venv && uv pip install -r requirements.txt`
-- [ ] Quick test: `uv run uvicorn main:app --reload` → `http://localhost:8000/hello` responds
-- [ ] `git init && git add . && git commit -m "FastAPI skeleton with /hello"`
+> Run this section from `$HOME\demos\`; it is the parent folder for the `shortly/` repo and the `shortly-stage-5` backup worktree. **No `plan-mode-demo/` is prepared** — Block 2 creates that folder live on stage.
 
 **Repo 2: `shortly/` (for Blocks 4–6)**
 
@@ -158,8 +151,8 @@ Create each setup branch immediately after its slash command: `git add . && git 
 
 ### B2 — Open apps ahead of time, in order (10 min)
 
-1. **Terminal tab 1:** `cd $HOME\demos\plan-mode-demo` (Block 2)
-2. **VS Code window A:** `plan-mode-demo\` opened, `main.py` as active tab, Copilot Chat open
+1. **Terminal tab 1:** `cd $HOME\demos` (Block 2 creates `plan-mode-demo\` live from here)
+2. **VS Code window A:** closed or on the welcome screen — you open it live in Block 2 step (a)
 3. **Terminal tab 2:** `cd $HOME\demos\shortly`, then `git checkout -f stage-1-after-init` (Blocks 4–6)
 4. **VS Code window B:** `shortly\` on branch `stage-1-after-init` (so only `specify init` + `/speckit.constitution`, NO spec/plan/tasks — those come live), Explorer with `.specify\` expanded
 5. **Terminal tab 3:** `cd $HOME\demos\shortly-stage-5`, confirm `git status` is clean, then run the backup app on port 8001 (`uv run uvicorn app.main:app --port 8001 --reload`) — this is the emergency parachute app
@@ -172,10 +165,11 @@ Create each setup branch immediately after its slash command: `git add . && git 
 
 ### B3 — Smoke test (5 min)
 
-- [ ] `git status` in `plan-mode-demo\` and `shortly\` = clean
+- [ ] `$HOME\demos\plan-mode-demo` does **not** exist yet (you will create it live; if a previous rehearsal left one, delete it now)
+- [ ] `git status` in `shortly\` = clean
 - [ ] Terminal tab 3 shows the port-8001 backup app running without errors
 - [ ] `git branch` in `shortly\` shows all stage-1 through stage-5
-- [ ] Copilot Chat responds in **both** VS Code windows (type a short test question, e.g. "hi")
+- [ ] Copilot Chat responds in the **shortly\** VS Code window (type a short test question, e.g. "hi")
 - [ ] Browser tab 1 (`http://localhost:8001`) loads the URL shortener index page
 - [ ] Turn off notifications, Slack, mail, and updates (Focus Assist / Do Not Disturb)
 - [ ] Disable screen saver for the next hour

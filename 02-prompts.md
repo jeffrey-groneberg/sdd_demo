@@ -10,18 +10,29 @@
 
 ---
 
-## §1 — Plan Mode Prompt (Block 2 — LIVE)
+## §1 — Plan Mode Prompt (Block 2 — LIVE, run on a freshly created empty folder)
 
 ```text
 Plan only. Do not edit any files.
 
-We have a FastAPI URL shortener (currently just /hello).
-Plan how to add:
+This folder is empty. Plan how to bootstrap a tiny FastAPI service:
 - a GET /health endpoint returning {"status": "ok"}
 - one pytest test that verifies status 200 and the JSON body
+- use uv for dependency management
 
-Give me: files to touch, exact test cases, and risks.
+Give me: files to create, exact test cases, and risks.
 ```
+
+**Terminal preamble (run live, just before the prompt above):**
+
+```powershell
+cd $HOME\demos
+mkdir plan-mode-demo
+cd plan-mode-demo
+code .
+```
+
+Then open Copilot Chat (Ctrl+Alt+I) → switch mode dropdown to **Plan** → paste the prompt.
 
 ---
 
@@ -106,14 +117,8 @@ uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 mkdir $HOME\demos
 cd $HOME\demos
 
-# 4. Plan Mode demo repo from skeleton
-mkdir plan-mode-demo
-cd plan-mode-demo
-# Copy contents of files\04-plan-b\mini-skeleton\ here
-git init
-git add .
-git commit -m "FastAPI skeleton with /hello"
-cd ..
+# 4. (Block 2 happens LIVE on stage — no demo repo prep needed.
+#     The `plan-mode-demo` folder gets created in front of the audience.)
 
 # 5. Initialize SpecKit demo repo — then open VS Code
 specify init shortly --integration copilot

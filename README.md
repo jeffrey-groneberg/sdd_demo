@@ -29,7 +29,7 @@
 
 ```
 04-plan-b/
-├── mini-skeleton/              ← Block 2 (Plan Mode): tiny FastAPI with /hello
+├── mini-skeleton/              ← Last-ditch fallback only (if Copilot is fully down in Block 2). Block 2 normally creates an empty folder live and lets Plan Mode bootstrap from zero.
 │   ├── main.py
 │   ├── requirements.txt
 │   └── README.md
