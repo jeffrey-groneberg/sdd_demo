@@ -12,7 +12,7 @@
 - **Agent runs to completion by default.** All four SpecKit commands run live: `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, **and** `/speckit.implement`. The audience sees the chat flow, streamed reasoning, and real work. **There is no planned cut.**
 - **`/speckit.implement` typically takes 5–8 minutes.** Use that window to narrate the spec → plan → tasks → code connection while the agent works through tasks in dependency order. Total demo wall-clock is ~28 min (range 25–30 depending on agent speed).
 - **Branches are an emergency parachute, not the plan.** Pre-staged branches `stage-1` through `stage-5` only get pulled when something is clearly broken: the agent hangs for several minutes with no token stream, hits an explicit error after retries, the network drops, or quota is exhausted. **Default behaviour: wait, narrate, finish.**
-- **Pre-stage assumption:** Demo starts on `stage-1-after-init` (= `specify init` + `/speckit.constitution` already done), saving 90 seconds of one-time setup fiddling on stage.
+- **Pre-stage assumption:** Demo creates everything **live** — `plan-mode-demo/` in Block 2 and `shortly-live/` (with `specify init` + `/speckit.constitution`) in Block 4. The pre-staged `shortly/` repo with `stage-1` through `stage-5` branches sits in a **second VS Code window as the emergency parachute** — only opened if a live step stalls or errors.
 
 ## 📋 Contents
 

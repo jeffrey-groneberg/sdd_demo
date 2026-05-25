@@ -83,9 +83,9 @@ services.
 
 ---
 
-## §6 — `/speckit.constitution` (Project setup — SETUP)
+## §6 — `/speckit.constitution` (Block 4 — LIVE)
 
-> **Setup-only:** run once before stage. Do not paste during the live demo.
+> **Live in Block 4** (paste into Copilot Chat of the freshly-`init`-ed `shortly-live/` window). Also re-used in the parachute `shortly/` repo during setup so the `stage-1-after-init` branch exists as a backup.
 >
 > 💡 **In VS Code Copilot Chat: `Shift+Enter` for a line break inside a prompt.**
 
@@ -104,23 +104,24 @@ services.
 
 ## §7 — Setup Commands (Project setup — SETUP)
 
-> **Setup-only terminal commands.** Run before demo day, not during the live script.
+> **Setup-only terminal commands.** Run before demo day, not during the live script. Install commands are also shown to the audience in Block 4 — they aren't re-run live.
 
 ```powershell
 # 1. Install uv (if not already installed) — Windows PowerShell
 powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
 
-# 2. Install SpecKit CLI
+# 2. Install SpecKit CLI (also visible to audience in Block 4 as a reference; not re-run live)
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
 # 3. Prepare demo directory
 mkdir $HOME\demos
 cd $HOME\demos
 
-# 4. (Block 2 happens LIVE on stage — no demo repo prep needed.
-#     The `plan-mode-demo` folder gets created in front of the audience.)
+# 4. (Block 2 happens LIVE on stage — `plan-mode-demo/` gets created in front of the audience.
+#     Block 4 also happens LIVE — `specify init shortly-live` runs in front of the audience.)
 
-# 5. Initialize SpecKit demo repo — then open VS Code
+# 5. Build the PARACHUTE repo (`shortly/`) — only opened if the live demo stalls.
+#    Run all four speckit commands here to materialise stage-1 ... stage-5 branches.
 specify init shortly --integration copilot
 cd shortly
 code .
@@ -130,7 +131,7 @@ git commit -m "stage-1-after-init: init + constitution"
 git branch stage-1-after-init
 
 # (Continue with /speckit.specify, /plan, /tasks, /implement —
-#  one branch after each step. See 03-setup-checklist.md.)
+#  one branch after each step. See 03-setup-checklist.md A2.)
 ```
 
 ---

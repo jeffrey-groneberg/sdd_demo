@@ -21,9 +21,9 @@
 
 ### A2 — Prepare demo repos (45 min)
 
-> Run this section from `$HOME\demos\`; it is the parent folder for the `shortly/` repo and the `shortly-stage-5` backup worktree. **No `plan-mode-demo/` is prepared** — Block 2 creates that folder live on stage.
+> Run this section from `$HOME\demos\`; it is the parent folder for the `shortly/` parachute repo and the `shortly-stage-5` backup worktree. **No `plan-mode-demo/` and no `shortly-live/` are prepared** — Block 2 creates `plan-mode-demo/` live on stage; Block 4 creates `shortly-live/` live on stage. The prepared `shortly/` exists only as the emergency parachute, opened in window B and never demoed unless something stalls.
 
-**Repo 2: `shortly/` (for Blocks 4–6)**
+**Repo 2: `shortly/` (parachute for Blocks 4–6)**
 
 > 🎯 **Purpose of the branches:** They are an **emergency parachute** for live demos. On demo day the agent runs to completion for every SpecKit command, including `/speckit.implement` (5–8 min). Use a branch only when the agent has no token stream for > 3 min, returns an error it does not self-recover from, or pushes the demo past 30 min.
 >
@@ -153,8 +153,8 @@ Create each setup branch immediately after its slash command: `git add . && git 
 
 1. **Terminal tab 1:** `cd $HOME\demos` (Block 2 creates `plan-mode-demo\` live from here)
 2. **VS Code window A:** closed or on the welcome screen — you open it live in Block 2 step (a)
-3. **Terminal tab 2:** `cd $HOME\demos\shortly`, then `git checkout -f stage-1-after-init` (Blocks 4–6)
-4. **VS Code window B:** `shortly\` on branch `stage-1-after-init` (so only `specify init` + `/speckit.constitution`, NO spec/plan/tasks — those come live), Explorer with `.specify\` expanded
+3. **Terminal tab 2:** `cd $HOME\demos\shortly`, then `git checkout -f stage-1-after-init` (this terminal stays attached to the **parachute** repo for Blocks 4–6)
+4. **VS Code window B (parachute):** `shortly\` on branch `stage-1-after-init` opened in a separate window, Explorer collapsed. **This window is only opened during emergencies** — in Block 4 you create `shortly-live/` live and open a different window for it. Having window B pre-loaded means an emergency switch is one Alt+Tab away.
 5. **Terminal tab 3:** `cd $HOME\demos\shortly-stage-5`, confirm `git status` is clean, then run the backup app on port 8001 (`uv run uvicorn app.main:app --port 8001 --reload`) — this is the emergency parachute app
    - Keep this on port 8001 so Browser tab 1 and `05-recovery.md` match.
 6. **Browser tab 1:** `http://localhost:8001` (shows the running backup app index page)
@@ -165,11 +165,12 @@ Create each setup branch immediately after its slash command: `git add . && git 
 
 ### B3 — Smoke test (5 min)
 
-- [ ] `$HOME\demos\plan-mode-demo` does **not** exist yet (you will create it live; if a previous rehearsal left one, delete it now)
-- [ ] `git status` in `shortly\` = clean
+- [ ] `$HOME\demos\plan-mode-demo` does **not** exist yet (you will create it live in Block 2; if a previous rehearsal left one, delete it now)
+- [ ] `$HOME\demos\shortly-live` does **not** exist yet (you will create it live in Block 4; if a previous rehearsal left one, delete it now)
+- [ ] `git status` in `shortly\` = clean (this is the parachute repo)
 - [ ] Terminal tab 3 shows the port-8001 backup app running without errors
 - [ ] `git branch` in `shortly\` shows all stage-1 through stage-5
-- [ ] Copilot Chat responds in the **shortly\** VS Code window (type a short test question, e.g. "hi")
+- [ ] Copilot Chat responds in the **shortly\** parachute VS Code window (type a short test question, e.g. "hi"). Window A for Block 2 / Block 4 starts empty by design.
 - [ ] Browser tab 1 (`http://localhost:8001`) loads the URL shortener index page
 - [ ] Turn off notifications, Slack, mail, and updates (Focus Assist / Do Not Disturb)
 - [ ] Disable screen saver for the next hour

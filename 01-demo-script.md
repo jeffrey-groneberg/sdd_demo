@@ -20,7 +20,7 @@ gantt
     3. Moment vs. over time            :b3, after b2, 120s
 
     section SDD Concept
-    4. Pipeline + Constitution         :b4, after b3, 240s
+    4. Install + init + Constitution    :b4, after b3, 240s
 
     section SpecKit LIVE
     5a /speckit.specify                :crit, b5a, after b4, 150s
@@ -142,11 +142,11 @@ When the response is there:
 
 ---
 
-## 🎬 Block 4 — SDD concept + first artifacts (7:00 – 11:00) · 4 min
+## 🎬 Block 4 — SDD concept + live install + first artifact (7:00 – 11:00) · 4 min
 
 **Step by step:**
 
-**(a) Concept slide / whiteboard — 1.5 min**
+**(a) Concept slide / whiteboard — 1 min**
 
 Show (best as a slide, alternatively live on the board):
 
@@ -182,36 +182,80 @@ flowchart LR
 
 > "Five steps, each produces a Markdown artifact in the repo. Every later artifact is **derived from the previous one** — spec to plan, plan to tasks, tasks to code. If I change the spec later, I can regenerate plan/tasks/code."
 
-**(b) Switch to demo repo — 30 sec**
+**(b) Show install commands — 30 sec**
 
-Terminal:
+Back in the terminal (we're still in `$HOME\demos\plan-mode-demo` from Block 2 — step out first):
+
 ```powershell
-cd $HOME\demos\shortly
-git checkout stage-1-after-init
+cd ..
+# (You are now in $HOME\demos\)
+```
+
+Show the install reference (printed cheat-sheet or pasted as comments — **don't actually run** these live, they're already installed):
+
+```powershell
+# One-time SpecKit install (already done Monday):
+uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
+```
+
+> "Two ways to use SpecKit: a VS Code extension, or this CLI. The CLI is what I use because it generates the same prompt files for any AI client — Copilot, Claude Code, Cursor, even Gemini. One-line install with `uv`. Took 30 seconds Monday morning."
+
+> 💡 **Why this command exists:** SpecKit isn't magic — it's a CLI that copies versioned prompt templates into your repo. Installing it once gives you the `specify` binary; running `specify init` per project copies the templates into `.specify/` and the slash-commands into your AI client's prompt folder.
+
+**(c) `specify init` LIVE — 45 sec**
+
+```powershell
+specify init shortly-live --integration copilot
+cd shortly-live
 code .
 ```
 
-> "This is the starting repo state: `specify init` **and** `/speckit.constitution` have already run — both are one-time project setup, so we skip them."
+VS Code opens a second window on `shortly-live/`. Open Copilot Chat (Ctrl+Alt+I).
 
-**(c) Show `.specify/` structure — 2 min**
+> "One command. The `--integration copilot` flag tells SpecKit to write prompt files where VS Code Copilot looks for them — `.github/prompts/speckit.*.prompt.md`. For Claude Code you'd say `--integration claude`. Same templates, different output paths."
+
+**(d) Show `.specify/` structure + WHY — 30 sec**
 
 Expand in Explorer:
 ```
 .specify/
-├── memory/
-│   └── constitution.md    ← Project principles
-└── specs/                 ← (still empty)
+├── memory/                ← shared across all features
+│   └── constitution.md    ← (empty template — we fill it next)
+├── scripts/               ← helpers the slash-commands call
+└── templates/             ← spec/plan/tasks templates
+.github/prompts/
+└── speckit.*.prompt.md    ← the actual slash-commands (one .md per command)
 ```
 
-> "Constitution is the project's DNA. It contains rules like 'we only use FastAPI and SQLite', 'every feature needs tests', 'no external services'. It is set once per project — and all further SpecKit commands respect it."
+> "Everything is just Markdown and shell scripts in your repo. No daemon, no API. You can `git diff` a SpecKit upgrade. You can PR a change to your team's `/speckit.implement` prompt."
 
-> 💡 **Why this command exists:** Without a constitution, every new feature picks its own stack, conventions, and opinions. The constitution gives the model persistent guardrails across every prompt in the project's lifetime.
+**(e) `/speckit.constitution` LIVE — 1 min** *(prompt → `02-prompts.md` §6)*
 
-Open `constitution.md`, scroll briefly, highlight 1–2 principles.
+In Copilot Chat (the new window on `shortly-live/`), paste the §6 prompt:
+
+```
+/speckit.constitution Create project principles focused on:
+1. Minimal dependencies — only what is essential
+2. Standard library first — prefer Python stdlib over third-party
+3. Testability — every endpoint needs at least one test
+4. Server-rendered HTML — no SPA, no build step
+5. No external services — must run fully offline
+6. Single-file modules where reasonable
+7. Explicit over implicit — no magic frameworks
+```
+
+While it streams:
+
+> "Constitution = project DNA. Persistent guardrails across every later prompt. Set once; respected by `/specify`, `/plan`, `/tasks`, `/implement` from now on. Without this, every new feature picks its own stack."
+
+When done: open `.specify/memory/constitution.md`, scroll briefly, highlight 1–2 principles.
+
+> 💡 **Why this command exists:** Without a constitution, every new feature drifts on stack and conventions. The constitution survives across prompts, branches, and developers — the only true shared agreement.
 
 **Cue card:**
-- ⏱ Must be in the next block by 11:00.
-- 🎯 Audience understood: SDD = pipeline of Markdown artifacts in the repo.
+- ⏱ Must be in Block 5 by 11:00. If `specify init` or `/speckit.constitution` stall or error: switch to **VS Code window B** (the prepared `shortly/` on `stage-1-after-init`) and continue from there — same content, just pre-baked.
+- 🚨 **If `specify init` fails (e.g., network):** in VS Code window B, `git checkout -f stage-1-after-init` and say *"Same state I just tried to create — pre-staged for exactly this moment."*
+- 🎯 Audience saw: how to install SpecKit, what `specify init` produces, how `/speckit.constitution` is generated — the **full bootstrap**, not just the result.
 
 ---
 
@@ -219,7 +263,7 @@ Open `constitution.md`, scroll briefly, highlight 1–2 principles.
 
 > **Strategy:** All 4 SpecKit commands run **live**; the **agent runs to completion** by default so the audience sees the chat flow, streamed reasoning, and real work. Pre-staged branches are an **emergency parachute** — pull them only if a command hangs for several minutes with no token stream or errors out. While `/speckit.implement` works (5–8 min), you narrate; that long window is the point.
 >
-> **Before Block 5:** You are on branch **`stage-1-after-init`** — `specify init` + `/speckit.constitution` already ran beforehand (see setup checklist). This saves 90 sec and gives you a clean starting state.
+> **Before Block 5:** You are in the freshly-created `shortly-live/` repo with `specify init` + `/speckit.constitution` both **just run live** in Block 4. The prepared `shortly/` (with `stage-1` through `stage-5` branches) sits in a **second VS Code window** as the emergency parachute — pull it only if a slash-command stalls or errors.
 >
 > ⏱ **Timer setup:** A visible stopwatch is running on the second screen (phone or online timer such as `timer.onlineclock.net`). Restart the timer after pressing Enter on a slash command — that way you can tell at a glance whether the agent is making progress or has truly stalled.
 
@@ -251,7 +295,7 @@ flowchart TD
 
 ### Part 5a — `/speckit.specify` live (11:00 – 13:30) · 2.5 min
 
-**Setup:** VS Code opened in the `shortly` repo on `stage-1-after-init`. Copilot Chat visible.
+**Setup:** VS Code window A is on `shortly-live/` — freshly created in Block 4 with `specify init` + `/speckit.constitution` already run. Copilot Chat visible. (Parachute: window B on `shortly/`, branch `stage-1-after-init`.)
 
 **Say:**
 > "First command: `/speckit.specify`. Here I describe **what** I want to build — no tech stack, no architecture. Pure product perspective."
@@ -280,7 +324,7 @@ on the home page. Single-user, no auth, no expiry.
 
 > "Still no 'FastAPI' or 'SQLite' here. That comes only in the next step."
 
-**🚨 Emergency parachute (only if no tokens for > 3 min, or hard error):**
+**🚨 Emergency parachute (only if no tokens for > 3 min, or hard error):** Switch to VS Code window B (`shortly/`):
 ```bash
 git checkout -f stage-2-after-specify
 ```
@@ -320,7 +364,7 @@ services.
 
 > "The plan respects the Constitution. That is explicit — not a lucky model choice."
 
-**🚨 Emergency parachute (only if no tokens for > 3 min, or hard error):**
+**🚨 Emergency parachute (only if no tokens for > 3 min, or hard error):** Switch to VS Code window B (`shortly/`):
 ```bash
 git checkout -f stage-3-after-plan
 ```
@@ -352,7 +396,7 @@ git checkout -f stage-3-after-plan
 
 > "Each task is small, has a clear done criterion, often with a test case. The `[P]` marker shows what can run in parallel."
 
-**🚨 Emergency parachute (only if no tokens for > 2 min, or hard error):**
+**🚨 Emergency parachute (only if no tokens for > 2 min, or hard error):** Switch to VS Code window B (`shortly/`):
 ```bash
 git checkout -f stage-4-after-tasks
 ```
@@ -402,7 +446,7 @@ You now have a **5–8 minute live window** where the speaker drives the narrati
 
 **Cue card Block 5:**
 - ⏱ Target: Block 6 around ~24:00. If the agent is still streaming, keep narrating; only parachute at the thresholds below.
-- 🚨 Emergency parachute **only if** no token stream for > 3 min OR explicit error after retries OR you've overshot 30 min total. Then: Stop button → `git checkout -f stage-5-complete`.
+- 🚨 Emergency parachute **only if** no token stream for > 3 min OR explicit error after retries OR you've overshot 30 min total. Then: Stop button → switch to VS Code window B (`shortly/`) → `git checkout -f stage-5-complete`.
 - 🎯 Audience has seen **all 4 SpecKit commands** and the agent translating spec → app end-to-end.
 
 ---
