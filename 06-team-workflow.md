@@ -108,6 +108,48 @@ AI becomes a **junior dev who works async**. You assign work to it the same way 
 
 > **CLI variant:** the same `/speckit.*` commands run 1:1 in the GitHub Copilot CLI. A team member who lives in the terminal hands off the same way; the artifacts don't care which client wrote them.
 
+## FAQ — `/speckit.taskstoissues` deep dive
+
+Audience asks this every time. The honest answers:
+
+### Why bother? `tasks.md` is already in git.
+
+Because `tasks.md` is a private Markdown list. **Issues are first-class GitHub objects.** Four concrete upgrades:
+
+| Capability | `tasks.md` alone | After `/speckit.taskstoissues` |
+|---|---|---|
+| Assign to a specific developer | ❌ (just a checkbox in markdown) | ✅ assignee, label, project board |
+| Cloud-agent handoff (async, parallel) | ❌ | ✅ label `copilot` → cloud agent picks up |
+| PR auto-close via `Closes #42` | ❌ | ✅ link establishes traceability |
+| Comment thread + decisions over time | ❌ | ✅ issue body + comments + reactions |
+
+The biggest win is the **cloud-agent handoff**: after `/speckit.taskstoissues`, the entire backlog can be worked **in parallel, asynchronously**, by Copilot's cloud agent or by human teammates — instead of single-threaded inside one local `/speckit.implement` session.
+
+### How does it actually work under the hood?
+
+The `/speckit.taskstoissues` prompt is ~10 lines:
+
+1. Read `tasks.md` from the active feature folder.
+2. Read `git config --get remote.origin.url`; verify it is a GitHub URL.
+3. For each task, call the **GitHub MCP server's `issue_write` tool** to create one issue in that repo.
+4. Hard safeguard: **never** create issues in a repo that doesn't match the local remote.
+
+That is the whole mechanism. No magic.
+
+### Is there a back-reference from `tasks.md` to the created issues?
+
+**Out of the box: no.** The prompt only writes *forward* (tasks → issues). `tasks.md` stays unchanged after the command runs. The issue *body* typically contains the task description (because the model has the task text in context) but there is no programmatic guarantee.
+
+Three patterns teams add themselves:
+
+| Pattern | How | Effort |
+|---|---|---|
+| **Naming convention** | Add to the prompt: *"prefix every issue title with the T-number"*. Then `gh issue list \| grep "^T0"` maps cleanly back. | 5 sec extra prompt |
+| **Follow-up prompt** | Right after `/speckit.taskstoissues`: *"Now update tasks.md and add the GitHub issue number in parentheses next to each task title."* The model still has the issue numbers in context. | 30 sec |
+| **Forked prompt file** | Edit `.github/prompts/speckit.taskstoissues.prompt.md` in your repo, append a step 5: *"append a markdown table to tasks.md mapping T-number ↔ issue URL"*. Versionable in git, team-wide enforced. | 10 min, one-time |
+
+**Demo zinger** if asked live: *"Out-of-the-box it's a one-way mapping. Want the round-trip? Fork the prompt file or chain a follow-up. That flexibility is exactly the point of SpecKit being just markdown prompts in `.github/prompts/` — you change behavior with a PR, not a release."*
+
 ## Constitution evolution
 
 The constitution captures team agreements: "we use Postgres, not SQLite", "all endpoints need tests", "no client-side rendering", etc.
