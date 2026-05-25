@@ -96,13 +96,17 @@ You don't need separate humans for each role — but the artifacts make the hand
 
 ## AI agents as teammates
 
-GitHub Copilot's cloud coding agent can pick up `/speckit.implement` on any PR you tag for it. The workflow:
+GitHub Copilot's cloud coding agent can pick up GitHub issues you tag for it. The workflow:
 
 1. Human writes spec → PR → merge.
 2. Human (or AI) writes plan → PR → merge.
-3. `/speckit.taskstoissues` creates issues for each task.
-4. Label an issue `ai-implement`. Copilot's cloud agent claims it, runs `/speckit.implement` against that task's scope, opens a PR.
+3. `/speckit.taskstoissues` creates one issue per task.
+4. Label an issue `copilot` (or assign to the Copilot bot user). The cloud agent claims it, **reads spec.md + plan.md + the task description** for context, branches off, implements **just that task's scope**, and opens a PR.
 5. Human reviews the code PR (which is small, because it implements one task).
+
+> ⚠ **Note on `/speckit.implement` vs the per-issue flow.** The two are alternative paths, not sequential:
+> - `/speckit.implement` (single-developer flow) reads `tasks.md` and works through **all** tasks in one local session. There is no per-task mode built in.
+> - `/speckit.taskstoissues` + cloud agent (team flow) is the **distributed** counterpart: each issue is implemented individually, in parallel, by whoever picks it up. The cloud agent does **not** run `/speckit.implement` per issue — it implements the issue's task directly using spec/plan as context.
 
 AI becomes a **junior dev who works async**. You assign work to it the same way you assign work to a human — through issues with clear context. The spec/plan/tasks chain *is* the context.
 
@@ -124,6 +128,11 @@ Because `tasks.md` is a private Markdown list. **Issues are first-class GitHub o
 | Comment thread + decisions over time | ❌ | ✅ issue body + comments + reactions |
 
 The biggest win is the **cloud-agent handoff**: after `/speckit.taskstoissues`, the entire backlog can be worked **in parallel, asynchronously**, by Copilot's cloud agent or by human teammates — instead of single-threaded inside one local `/speckit.implement` session.
+
+> ⚠ **Important: `/speckit.implement` does NOT read GitHub issues.** Verified against the current upstream prompt at `templates/commands/implement.md` — step 3 is literally *"REQUIRED: Read tasks.md for the complete task list"*. Issues never appear. The two are **alternative paths**, not a chain:
+>
+> - **Local single-dev path:** `/speckit.implement` → reads `tasks.md` → implements **all** tasks in one session → ticks `[X]` in tasks.md.
+> - **Distributed team path:** `/speckit.taskstoissues` → developers/cloud-agent pick up issues individually → each implements **one task** using spec.md + plan.md + the issue body as context. No `/speckit.implement` per issue — the per-issue work is done directly.
 
 ### How does it actually work under the hood?
 
