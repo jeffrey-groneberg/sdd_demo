@@ -1,4 +1,4 @@
-# Demo Script: Plan Mode → SDD with SpecKit (~28 min, EN)
+# Demo Script: Plan Agent → SDD with SpecKit (~28 min, EN)
 
 > **Golden rule:** Don't read aloud — follow the **block cues** in bold. If you lose the thread: take a deep breath, jump to the next cue. Branches are only for true emergencies.
 
@@ -13,8 +13,8 @@ gantt
     section Intro
     1. Hello + what's coming           :b1, 00:00, 90s
 
-    section Plan Mode
-    2. Plan Mode live (bootstrap FastAPI from zero) :b2, after b1, 210s
+    section Plan Agent
+    2. Plan agent live (bootstrap FastAPI from zero) :b2, after b1, 210s
 
     section Bridge
     3. Moment vs. over time            :b3, after b2, 120s
@@ -50,9 +50,9 @@ gantt
 
 > "Hello everyone. Who recognizes this: you have an idea, write a long prompt in Copilot Chat, press Enter — and 5 minutes later you have code that sort of works, but nobody knows why anymore. That is **Vibe Coding**.
 >
-> For small tasks, that's okay. For larger features, it becomes technical debt nobody reviewed. Today I'll show two GitHub tools for two time horizons: **Plan Mode** for the moment, **SpecKit / Spec-Driven Development** for the lifetime of a feature.
+> For small tasks, that's okay. For larger features, it becomes technical debt nobody reviewed. Today I'll show two GitHub tools for two time horizons: the **Plan agent** for the moment, **SpecKit / Spec-Driven Development** for the lifetime of a feature.
 >
-> In about 28 minutes: a short live Plan Mode snack, then SpecKit with a real small app — a URL shortener with click statistics."
+> In about 28 minutes: a short live Plan agent snack, then SpecKit with a real small app — a URL shortener with click statistics."
 
 **Cue card:**
 - ⏱ **No longer than 90 sec!** If you start rambling → go directly to Block 2.
@@ -60,15 +60,17 @@ gantt
 
 ---
 
-## 🎬 Block 2 — Plan Mode live (1:30 – 5:00) · 3.5 min
+## 🎬 Block 2 — Plan agent live (1:30 – 5:00) · 3.5 min
+
+> 📘 **Terminology note (May 2026):** VS Code now calls this the **"Plan agent"**, selected from the **agents dropdown** in the Chat view. Earlier builds/talks called it **"Plan Mode"** — it is the same feature. Built-in since VS Code 1.105; current Stable is 1.121.
 
 **Setup ahead of time:**
 - Terminal open in `$HOME\demos\` (the parent folder — no demo repo prepared)
 - VS Code closed, or on the welcome screen
-- Copilot Chat ready in either case (Ctrl+Alt+I after you open VS Code)
-- Model set to **Claude Sonnet 4.5** or **GPT-5** (most stable Plan Mode outputs)
+- Chat view ready in either case (Ctrl+Alt+I after you open VS Code)
+- Model set to **Claude Sonnet 4.5** or **GPT-5** (most stable Plan agent outputs)
 
-> 💡 **Why create the folder live?** The audience sees the workflow start from a truly empty state — no hidden setup, no "I prepared this earlier". Plan Mode's job is to think *before* code exists, and now they watch that happen on a real empty folder.
+> 💡 **Why create the folder live?** The audience sees the workflow start from a truly empty state — no hidden setup, no "I prepared this earlier". The Plan agent's job is to think *before* code exists, and now they watch that happen on a real empty folder.
 
 **Step by step:**
 
@@ -85,9 +87,9 @@ VS Code opens on the empty folder.
 
 > "Empty folder. Nothing pre-made. Imagine you're starting a new microservice from scratch."
 
-**(b) Switch Copilot Chat to Plan Mode — 20 sec**
+**(b) Switch the Chat view to the Plan agent — 20 sec**
 
-Open Copilot Chat (Ctrl+Alt+I). In the mode dropdown at the top, switch from **Agent** to **Plan**.
+Open the Chat view (Ctrl+Alt+I). In the **agents dropdown** at the top, switch from **Agent** to **Plan**. (Equivalent shortcut: just type `/plan` followed by your prompt — VS Code switches to the Plan agent and starts in one step.)
 
 > "Three modes here: Ask is chat-only, Agent edits files, Plan is read-only and returns a structured plan. We want Plan — *think before code*."
 
@@ -106,9 +108,9 @@ Give me: files to create, exact test cases, and risks.
 
 **(d) Interpret response — 1.5 min**
 
-While Plan Mode is streaming, keep talking (DON'T wait silently!):
+While the Plan agent is streaming, keep talking (DON'T wait silently!):
 
-> "Plan Mode does not write code here. It gives me **files to create**, **exact test cases**, and **risks** or assumptions — the review material I want before any keystroke hits a `.py` file."
+> "The Plan agent does not write code here. It gives me **files to create**, **exact test cases**, and **risks** or assumptions — the review material I want before any keystroke hits a `.py` file."
 
 When the response is there:
 - Read 3 bullet points from the plan
@@ -117,24 +119,26 @@ When the response is there:
 > "I could click 'Implement Plan' now and Agent Mode would take this plan as context and create every file. But notice: this plan lives in the chat. Close the window and it's gone. That's the bridge to what comes next."
 
 **Cue card:**
-- ⏱ By 4:30 the plan must be there. If Plan Mode is still streaming, jump to Block 3 mid-stream — the audience already saw the point.
-- 🚨 **If the Plan Mode dropdown is missing:** VS Code Insiders or latest Stable needed. Fallback: use Ask mode with the same prompt prefixed by "Don't write code — outline the plan only."
-- 🚨 **If Copilot is fully down:** show the prepared screenshot from `$HOME\demos\backup\plan-mode-output.png` (created in Phase A4).
+- ⏱ By 4:30 the plan must be there. If the Plan agent is still streaming, jump to Block 3 mid-stream — the audience already saw the point.
+- 🚨 **If "Plan" is missing from the agents dropdown:** your VS Code is older than 1.105 → update to current Stable (1.121 or newer). Fallback: use Ask agent with the same prompt prefixed by "Don't write code — outline the plan only."
+- 🚨 **If Copilot is fully down:** show the prepared screenshot from `$HOME\demos\backup\plan-agent-output.png` (created in Phase A4).
 - 🎯 Goal: audience sees "chat can plan first, then let it code" — and "this plan is ephemeral".
 
 ---
 
 ## 🎬 Block 3 — Bridge (5:00 – 7:00) · 2 min
 
-**Visual:** Close Copilot Chat. Screen shows VS Code with the mini repo. Optional: slide with two quadrants ("Plan Mode" | "SpecKit").
+**Visual:** Close the Chat view. Screen shows VS Code with the mini repo. Optional: slide with two quadrants ("Plan agent" | "SpecKit").
 
 **Say — memorize the core sentence:**
 
-> "Plan Mode helps me think **in the moment**, before coding. SpecKit makes sure that intent persists **over time**.
+> "The Plan agent helps me think **in the moment**, before coding. SpecKit makes sure that intent persists **over time**.
 >
 > That intent is versioned in the repo, reviewable in PRs, and reusable during refactorings. That is **Spec-Driven Development** — and GitHub's SpecKit is the toolkit for it."
 
-> 💡 **Memorize the bold sentence.** Improvise the rest.
+> 💡 **The pedagogical hook (drop it casually):** "VS Code's Plan agent stores its plan in **session memory** (`Chat: Show Memory Files` → `plan.md`) — gone the moment the chat ends. SpecKit writes `spec.md`, `plan.md`, `tasks.md` into **git**: persistent, diffable, reviewable in PRs. That's exactly the 'moment vs. over time' split — same artifact name, completely different lifetime."
+
+> 💡 **Memorize the bold sentence.** The session-memory observation is the bonus zinger if you have 10 spare seconds.
 
 **Cue card:**
 - 🎯 Key point: "plan in the moment" vs. "spec over time". Use this wording **literally** — it lands.
@@ -518,7 +522,7 @@ If everything went smoothly: briefly show `tests/test_app.py` — the tests are 
 
 > "Three things to take away:
 >
-> 1. **Plan Mode** turns a prompt into a planned session — tactical, in the moment.
+> 1. **The Plan agent** turns a prompt into a planned session — tactical, in the moment.
 > 2. **SpecKit** turns planning into versioned project artifacts — strategic, over time.
 > 3. **The spec is the executable artifact** — not the code. Code becomes disposable when the spec lives.
 >
@@ -546,7 +550,7 @@ Use these **only** if the agent is truly stuck (no tokens for several minutes, o
 
 | When the clock shows … | … you should be in … |
 |----------------------|--------------------------|
-| 1:30 | Block 2 (Plan Mode) |
+| 1:30 | Block 2 (Plan agent) |
 | 5:00 | Block 3 (Bridge) |
 | 7:00 | Block 4 (SDD concept) |
 | 11:00 | Block 5a (`/speckit.specify` LIVE) |

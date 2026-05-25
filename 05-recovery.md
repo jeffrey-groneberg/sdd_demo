@@ -8,7 +8,7 @@
 flowchart TD
     Start([🚨 Something goes wrong]) --> What{What is happening?}
 
-    What -->|Plan Mode dropdown missing| PM["📸 Show screenshot<br/>backup/plan-mode-output.png"]
+    What -->|Plan agent missing from dropdown| PM["📸 Show screenshot<br/>backup/plan-agent-output.png"]
     What -->|"/speckit.* missing from autocomplete"| SC["specify check<br/>or parachute branch"]
     What -->|"/speckit.* hangs (no tokens for minutes)"| Hang["git checkout -f<br/>stage-N-..."]
     What -->|Output content is wrong| Hang
@@ -38,18 +38,18 @@ flowchart TD
 
 ---
 
-## 🚨 Plan Mode dropdown missing in VS Code Copilot Chat
+## 🚨 Plan agent missing from the agents dropdown in VS Code
 
-**Symptom:** Chat mode dropdown shows Ask/Agent only; no "Plan".
+**Symptom:** Chat view's **agents dropdown** shows only Ask and Agent; no "Plan" entry.
 
 **Immediate action:**
-- Open `$HOME\demos\backup\plan-mode-output.png`
-- Say: "Plan Mode is still rolling out, so I'll show you via screenshot."
+- Open `$HOME\demos\backup\plan-agent-output.png`
+- Say: "Looks like my VS Code is on an older build that doesn't have the Plan agent yet — I'll show you via screenshot."
 - Explain the screenshot for 60 sec, then continue to Block 3
 
-**Rationale:** The screenshot preserves the Plan Mode story without depending on rollout timing.
+**Rationale:** The screenshot preserves the Plan agent story without depending on the local VS Code version.
 
-**Medium term (before the demo):** Use VS Code Insiders, or enable via the `chat.modes` setting.
+**Medium term (before the demo):** Update VS Code to current Stable (1.105 or newer; 1.121 as of May 2026). The Plan agent is built-in — no setting toggle required.
 
 ---
 
@@ -210,7 +210,7 @@ flowchart TD
 **Immediate action:**
 - Play video backup `shortly-demo.mp4` from USB stick on backup device
 - If that also fails: tell the story with a whiteboard
-  - **Two boxes at the top:** Plan Mode (tactical, in the moment) | SpecKit (strategic, over time)
+  - **Two boxes at the top:** Plan agent (tactical, in the moment) | SpecKit (strategic, over time)
   - **Pipeline below:** Constitution → Specify → Plan → Tasks → Implement
   - **Takeaway under both:** "The spec is the executable artifact"
 - Say: "Live demos are honest — and reproducibility is exactly the advantage of Spec-Driven."

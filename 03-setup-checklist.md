@@ -8,9 +8,9 @@
 
 ### A1 — Verify tools (10 min)
 
-- [ ] Open `Help → About`; confirm VS Code is at least v1.110 (current Stable for the Plan Mode dropdown)
-- [ ] Confirm the GitHub Copilot extension is active, signed in, and Plan Mode appears in the chat mode dropdown
-  - When Plan Mode is missing: VS Code → Settings → Search "chat modes" → enable the Plan Mode feature
+- [ ] Open `Help → About`; confirm VS Code is at least **v1.105** (Plan agent went stable in 1.105). Current Stable as of May 2026 is **1.121** — updating to the latest is recommended.
+- [ ] Confirm the GitHub Copilot extension is active, signed in, and **Plan** appears in the **agents dropdown** of the Chat view (alongside Agent and Ask)
+  - If Plan is missing: your VS Code is too old → update to current Stable. There is no separate feature toggle to enable; the Plan agent is built-in to current Stable.
 - [ ] Run `copilot --version` for the one-sentence Copilot CLI note in the Wrap-up
 - [ ] Run `python --version`; confirm Python 3.12
 - [ ] Run `uv --version`; confirm uv is installed
@@ -120,7 +120,7 @@ Create each setup branch immediately after its slash command: `git add . && git 
 
 > 📁 **Storage location:** Put all backups in a folder `$HOME\demos\backup\` — easy to find on demo day.
 
-- [ ] Save screenshot of successful Plan Mode output to `$HOME\demos\backup\plan-mode-output.png`
+- [ ] Save screenshot of successful Plan agent output to `$HOME\demos\backup\plan-agent-output.png`
 - [ ] Save screenshots of successful `spec.md`, `plan.md`, `tasks.md` to `$HOME\demos\backup\{spec,plan,tasks}.png`
 - [ ] Record 2 min of the working app to `$HOME\demos\backup\shortly-demo.mp4`
 - [ ] Put `02-prompts.md` on the second screen and print one paper copy
@@ -180,7 +180,7 @@ Create each setup branch immediately after its slash command: `git add . && git 
 - [ ] Skim demo script block cues one more time
 - [ ] Do **box breathing** 3× (inhale 4 sec – hold 4 sec – exhale 6 sec – hold 2 sec)
 - [ ] Say the core bridge sentence out loud:
-  > "Plan Mode helps me think in the moment, before coding. SpecKit makes sure that intent persists over time."
+  > "The Plan agent helps me think in the moment, before coding. SpecKit makes sure that intent persists over time."
 - [ ] Put water within reach
 - [ ] Say out loud: "You are prepared. Even if EVERYTHING live breaks, you have emergency parachute branches + screenshots + video."
 

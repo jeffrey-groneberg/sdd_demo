@@ -10,7 +10,7 @@
 
 ---
 
-## §1 — Plan Mode Prompt (Block 2 — LIVE, run on a freshly created empty folder)
+## §1 — Plan Agent Prompt (Block 2 — LIVE, run on a freshly created empty folder)
 
 ```text
 Plan only. Do not edit any files.
@@ -32,7 +32,7 @@ cd plan-mode-demo
 code .
 ```
 
-Then open Copilot Chat (Ctrl+Alt+I) → switch mode dropdown to **Plan** → paste the prompt.
+Then open the Chat view (Ctrl+Alt+I) → select **Plan** from the agents dropdown → paste the prompt. (Equivalent shortcut: type `/plan` followed by the prompt body — VS Code switches to the Plan agent and starts in one step.)
 
 ---
 

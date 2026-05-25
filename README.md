@@ -1,6 +1,6 @@
 # 📦 SpecKit Demo Package — Overview
 
-> **Everything you need for Tuesday's ~28-minute (25–30 min) live demo of GitHub Copilot Plan Mode + SpecKit/Spec-Driven Development.**
+> **Everything you need for Tuesday's ~28-minute (25–30 min) live demo of GitHub Copilot's Plan agent + SpecKit/Spec-Driven Development.**
 > Start with the strategy, then use the contents table to choose: run the demo, review prep, or inspect the working app.
 
 > 🎤 **Live slides for participants:** <https://jeffrey-groneberg.github.io/sdd_demo/> · use these to follow along; slide 1 has the QR for this repo.
@@ -19,7 +19,7 @@
 | File / Folder | Purpose | When to read? |
 |----------------|-------|-------------|
 | `01-demo-script.md` | **Word-for-word speaker script** with block cues, time checkpoints, and emergency parachute lines | Start here if you're running or studying the demo |
-| `02-prompts.md` | Copy/paste prompts for Plan Mode, 4× SpecKit commands, and setup | Keep on a second display during the demo |
+| `02-prompts.md` | Copy/paste prompts for the Plan agent, 4× SpecKit commands, and setup | Keep on a second display during the demo |
 | `03-setup-checklist.md` | 2-phase checklist: Monday evening + 30 min before demo | **Complete by Monday evening at the latest** |
 | `04-plan-b/` | Emergency parachute artifacts, including a verified `final-app/` URL shortener | Inspect `final-app/` to explore the app; use branches only in emergencies |
 | `05-recovery.md` | "What to do if …" — emergency playbook | Skim beforehand, keep handy during the demo |
@@ -29,7 +29,7 @@
 
 ```
 04-plan-b/
-├── mini-skeleton/              ← Last-ditch fallback only (if Copilot is fully down in Block 2). Block 2 normally creates an empty folder live and lets Plan Mode bootstrap from zero.
+├── mini-skeleton/              ← Last-ditch fallback only (if Copilot is fully down in Block 2). Block 2 normally creates an empty folder live and lets the Plan agent bootstrap from zero.
 │   ├── main.py
 │   ├── requirements.txt
 │   └── README.md
@@ -65,7 +65,7 @@
 
 > **"The spec is the executable artifact. Code is the result."**
 >
-> Plan Mode helps me think in the **moment**, before coding. SpecKit makes sure that intent persists **over time**.
+> The Plan agent helps me think in the **moment**, before coding. SpecKit makes sure that intent persists **over time**.
 
 Use this as the throughline: intent captured before coding, then carried through implementation.
 
@@ -78,7 +78,9 @@ The authoritative pacing table is at the end of `01-demo-script.md`. The demo ru
 ## 🔗 Links for Wrap-up
 
 - SpecKit: https://github.com/github/spec-kit
-- VS Code Chat Modes: https://code.visualstudio.com/docs/copilot/chat/chat-modes
+- VS Code Plan agent: https://code.visualstudio.com/docs/copilot/agents/planning
+- VS Code custom prompt files: https://code.visualstudio.com/docs/copilot/customization/prompt-files
+- VS Code custom instructions (AGENTS.md / copilot-instructions.md): https://code.visualstudio.com/docs/copilot/customization/custom-instructions
 - Spec-Driven Methodology: https://github.com/github/spec-kit/blob/main/spec-driven.md
 
 ## 👥 How this scales to a team
