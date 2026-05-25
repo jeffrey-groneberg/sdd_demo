@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stats: {{ row['code'] }} — Shortly</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    <main class="container">
+        <hgroup>
+            <h1>📊 Stats for <code>{{ row['code'] }}</code></h1>
+            <p><a href="/">← back to home</a></p>
+        </hgroup>
+
+        <article>
+            <p><strong>Short URL:</strong> <a href="/{{ row['code'] }}" target="_blank">http://{{ request.url.netloc }}/{{ row['code'] }}</a></p>
+            <p><strong>Target:</strong> <a href="{{ row['url'] }}" target="_blank">{{ row['url'] }}</a></p>
+            <p><strong>Clicks:</strong> <kbd style="font-size: 1.5em;">{{ row['clicks'] }}</kbd></p>
+            <p><strong>Created:</strong> <small>{{ row['created_at'] }}</small></p>
+        </article>
+    </main>
+</body>
+</html>

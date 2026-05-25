@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shortly — URL Shortener</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+    <main class="container">
+        <hgroup>
+            <h1>🔗 Shortly</h1>
+            <p>A tiny URL shortener with click stats. Generated via SpecKit.</p>
+        </hgroup>
+
+        {% if created %}
+            <article style="background: #e6ffed; border-left: 4px solid #28a745;">
+                <strong>✅ Created:</strong>
+                <a href="/{{ created }}" target="_blank">http://{{ request.url.netloc }}/{{ created }}</a>
+                · <a href="/stats/{{ created }}">stats</a>
+            </article>
+        {% endif %}
+
+        {% if error %}
+            <article style="background: #ffe6e6; border-left: 4px solid #dc3545;">
+                <strong>⚠ Error:</strong> {{ error }}
+            </article>
+        {% endif %}
+
+        <form method="post" action="/shorten">
+            <label for="url">Long URL</label>
+            <input type="url" id="url" name="url" placeholder="https://example.com/some/long/path" required>
+            <button type="submit">Shorten</button>
+        </form>
+
+        <h2>Recent URLs</h2>
+        {% if recent %}
+            <table>
+                <thead>
+                    <tr><th>Code</th><th>Original URL</th><th>Clicks</th><th>Created</th><th></th></tr>
+                </thead>
+                <tbody>
+                    {% for r in recent %}
+                    <tr>
+                        <td><a href="/{{ r['code'] }}" target="_blank"><code>{{ r['code'] }}</code></a></td>
+                        <td><small>{{ r['url'][:60] }}{% if r['url']|length > 60 %}…{% endif %}</small></td>
+                        <td>{{ r['clicks'] }}</td>
+                        <td><small>{{ r['created_at'] }}</small></td>
+                        <td><a href="/stats/{{ r['code'] }}">stats</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p><em>No URLs shortened yet.</em></p>
+        {% endif %}
+    </main>
+</body>
+</html>
