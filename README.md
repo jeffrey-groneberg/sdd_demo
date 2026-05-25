@@ -24,6 +24,7 @@
 | `04-plan-b/` | Emergency parachute artifacts, including a verified `final-app/` URL shortener | Inspect `final-app/` to explore the app; use branches only in emergencies |
 | `05-recovery.md` | "What to do if …" — emergency playbook | Skim beforehand, keep handy during the demo |
 | `06-team-workflow.md` | **How SDD scales to multiple features and developers** — hand-offs, parallel features, AI agents as teammates | Read after the demo to plan rollout in your team |
+| `07-speckit-anatomy.md` | **Deep-dive reference:** what exactly happens inside each `/speckit.*` command — mechanics, prompt files, helper scripts, real artifact excerpts | Read after the demo when you want to understand the internals |
 
 ## 📁 04-plan-b/ — emergency parachute in detail
 
