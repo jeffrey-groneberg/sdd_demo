@@ -3,6 +3,8 @@
 > **Everything you need for Tuesday's 25-minute demo.**
 > Reading order follows the numbering.
 
+> 🎤 **Live slides for participants:** <https://jeffrey-groneberg.github.io/sdd_demo/> · scan the QR on slide 1 to follow along.
+
 > 💡 **Tip:** All Mermaid diagrams in the docs render in VS Code with **Ctrl+Shift+V** (Markdown preview).
 
 ## 🎯 Strategy (Live First with safety net)
