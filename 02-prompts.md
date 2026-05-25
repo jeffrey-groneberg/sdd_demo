@@ -1,8 +1,12 @@
 # Copy-Paste Prompts (cheat sheet)
 
-> Print this page or put it on a second display. All prompts are **tested** against the included Plan B artifacts.
+> Second-screen/print cheat sheet. Copy fenced `text` blocks into Copilot Chat; use fenced `powershell` blocks only in the terminal.
 >
-> ⚡ **Live-first strategy:** §2, §3, §4 are run **live** during the demo. §5 is **started** live and stopped after 30s. §6 is run once ahead of time during setup. Branches are only a safety net for timeouts > 90s.
+> ⚡ **All-live:** §2–§5 run live. The agent runs to completion every time, including `/speckit.implement` (5–8 min). No planned cut.
+>
+> 🧰 **Setup-only:** §6–§7 happen before stage.
+>
+> 🪂 **Emergency parachute:** branch jumps in §8 only if the agent has no token stream for several minutes, errors without auto-retry, or the demo passes 30 min.
 
 ---
 
@@ -56,18 +60,22 @@ services.
 
 ---
 
-## §5 — `/speckit.implement` (Block 5d — LIVE START, cut after 30s)
+## §5 — `/speckit.implement` full run (Block 5d — LIVE)
 
 ```text
 /speckit.implement
 ```
 
-> **Cut routine:** After 30s, click the Stop button in chat (red square at the top right of the chat input), then `git checkout -f stage-5-complete`.
+> **No cut. Do not stop after 30s.** The agent runs to completion (typically 5–8 min). Narrate: point at files as they appear, scroll `tasks.md` for checkmarks, mention dependency order. This live window is the point.
+>
+> 🪂 **Emergency parachute only if:** no token stream for > 3 min, OR an explicit error appears that doesn't auto-retry, OR you've passed 30 min total demo time. Then: Stop button in chat → `git checkout -f stage-5-complete`.
 
 ---
 
-## §6 — `/speckit.constitution` (run once ahead of time during project setup!)
+## §6 — `/speckit.constitution` (Project setup — SETUP)
 
+> **Setup-only:** run once before stage. Do not paste during the live demo.
+>
 > 💡 **In VS Code Copilot Chat: `Shift+Enter` for a line break inside a prompt.**
 
 ```text
@@ -83,7 +91,9 @@ services.
 
 ---
 
-## §7 — Setup Commands (day before the demo, NOT during the demo!)
+## §7 — Setup Commands (Project setup — SETUP)
+
+> **Setup-only terminal commands.** Run before demo day, not during the live script.
 
 ```powershell
 # 1. Install uv (if not already installed) — Windows PowerShell
@@ -120,19 +130,24 @@ git branch stage-1-after-init
 
 ---
 
-## §8 — Branch Jump Commands (safety net during demo, `-f` required!)
+## §8 — Emergency Parachute Commands (Block 5/6 — SETUP)
+
+> 🪂 **Terminal only.** `git checkout` lines are the emergency parachute, not planned cuts and not chat prompts. App-start lines are for Block 6.
 
 ```powershell
-# Block 5a bailout (if /speckit.specify hangs > 90s)
+# Only use if the agent is clearly stuck (no tokens for several minutes)
+# or has errored out — not for ordinary slowness.
+
+# Block 5a parachute (if /speckit.specify hangs > 3 min with no progress, or errors)
 git checkout -f stage-2-after-specify
 
-# Block 5b bailout (if /speckit.plan > 90s)
+# Block 5b parachute (if /speckit.plan hangs > 3 min with no progress, or errors)
 git checkout -f stage-3-after-plan
 
-# Block 5c bailout (if /speckit.tasks > 60s)
+# Block 5c parachute (if /speckit.tasks hangs > 2 min with no progress, or errors)
 git checkout -f stage-4-after-tasks
 
-# Block 5d — planned cut after 30s live start
+# Block 5d parachute (if /speckit.implement hangs > 3 min between tasks, errors, or blows past 30 min demo total)
 git checkout -f stage-5-complete
 
 # Start app (Block 6)
@@ -141,13 +156,13 @@ uv run uvicorn app.main:app --reload
 python -m uvicorn app.main:app --reload
 ```
 
-> **`-f` is required** — live SpecKit commands create uncommitted files that would block a normal checkout.
+> **`-f` is required** — live SpecKit commands create uncommitted files that block a normal checkout.
 
 ---
 
-## §9 — Recovery Mantra (stick it on the cheat sheet)
+## §9 — Recovery Mantra (Block 5 emergency — SETUP)
 
 1. **BREATHE** (one deep inhale, slow exhale)
-2. **SAY:** "So we don't wait for tokens, let's jump to the deterministic state."
+2. **SAY:** "So we don't wait for tokens, we'll use the emergency parachute and continue from the deterministic state."
 3. **TYPE:** `git checkout -f stage-N-...`
 4. **CONTINUE** in the script as if nothing happened

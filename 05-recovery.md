@@ -1,6 +1,6 @@
 # Recovery Playbook (what to do if …)
 
-> Every symptom has an **action (max 10 sec)** + a **sentence** you say while doing it. Scan for 5 min before the demo; keep it handy on a second screen during the demo.
+> Default: **agent runs to completion.** Use an **emergency parachute** only for no token stream for several minutes, an explicit error, or 30:00 total wall-clock. Slow but still streaming = wait.
 
 ## 🧭 Emergency decision tree
 
@@ -9,12 +9,12 @@ flowchart TD
     Start([🚨 Something goes wrong]) --> What{What is happening?}
 
     What -->|Plan Mode dropdown missing| PM["📸 Show screenshot<br/>backup/plan-mode-output.png"]
-    What -->|"/speckit.* missing from autocomplete"| SC["specify check<br/>or bailout branch"]
-    What -->|"/speckit.* hangs &gt; timeout"| Hang["git checkout -f<br/>stage-N-..."]
+    What -->|"/speckit.* missing from autocomplete"| SC["specify check<br/>or parachute branch"]
+    What -->|"/speckit.* hangs (no tokens for minutes)"| Hang["git checkout -f<br/>stage-N-..."]
     What -->|Output content is wrong| Hang
     What -->|App won't start| App["🌐 Browser tab 1<br/>localhost:8001"]
     What -->|Internet down| Net["📴 Branch tour only<br/>no more live commands"]
-    What -->|Time running out 22:00+| Skip["Skip 5d<br/>directly stage-5-complete"]
+    What -->|Past 30:00 still in Block 5| Skip["Stop /implement<br/>checkout stage-5-complete"]
     What -->|Audience question| Q["📝 Park in Q&A list"]
     What -->|Total failure| Fail["💾 USB video<br/>or whiteboard story"]
 
@@ -34,19 +34,20 @@ flowchart TD
     style What fill:#fff4e1,stroke:#f57c00
 ```
 
-> 💡 Scroll to the **details below** for the exact sentence per symptom.
+> 💡 Panic flow: match symptom → do one action → say one sentence.
 
 ---
 
 ## 🚨 Plan Mode dropdown missing in VS Code Copilot Chat
 
-**Symptom:** In the chat mode dropdown (at the top of the chat sidebar), there is only Ask/Agent, no "Plan".
+**Symptom:** Chat mode dropdown shows Ask/Agent only; no "Plan".
 
 **Immediate action:**
-- Say: "Plan Mode is still rolling out, so I'll show you via screenshot."
 - Open `$HOME\demos\backup\plan-mode-output.png`
-- Explain the screenshot for 60 sec
-- → directly continue to Block 3
+- Say: "Plan Mode is still rolling out, so I'll show you via screenshot."
+- Explain the screenshot for 60 sec, then continue to Block 3
+
+**Rationale:** The screenshot preserves the Plan Mode story without depending on rollout timing.
 
 **Medium term (before the demo):** Use VS Code Insiders, or enable via the `chat.modes` setting.
 
@@ -54,55 +55,67 @@ flowchart TD
 
 ## 🚨 Slash command `/speckit.*` does not appear in chat
 
-**Symptom:** You type `/speckit.` but autocomplete shows nothing.
+**Symptom:** You type `/speckit.`; autocomplete shows nothing.
 
 **Immediate action:**
-- Say: "The workspace is being re-indexed, one moment …"
 - In terminal: `cd shortly && specify check` (shows integration status)
-- If still nothing: **go directly to branch jump** `git checkout stage-2-after-specify`
-- Say: "I'll take the prepared state — we'll see identical output in a moment."
+- If still nothing: `git checkout stage-2-after-specify`
+- Say: "Copilot is re-indexing; if it stays missing, the branch is the emergency parachute."
 
-**Root cause:** Either the Copilot integration was not installed (`specify init ... --integration copilot` was missing) or VS Code needs to be reloaded.
-
----
-
-## 🚨 `/speckit.specify` runs longer than 90 sec
-
-**Immediate action (at 90 sec):**
-- Say: "So we don't wait for tokens, let's jump to the deterministic state."
-- Terminal: `git checkout -f stage-2-after-specify`
-- Open `.specify/specs/001-url-shortener/spec.md`
-- Explain as planned
-
-> The `-f` flag is important: live `/specify` may already have created files that must be discarded.
+**Rationale:** This is an indexing/integration problem; after the demo, check `specify init ... --integration copilot` or reload VS Code.
 
 ---
 
-## 🚨 `/speckit.plan` runs longer than 90 sec
+## 🚨 `/speckit.specify` stalls (no token stream for > 3 min) or errors out
+
+**Symptom:** No token stream for > 3 min, or an explicit error appears.
 
 **Immediate action:**
-- Say: "The plan is ready in the branch — the content is exactly what we are generating right now."
+- `git checkout -f stage-2-after-specify`
+- Say: "The agent is stuck — let's jump to the prepared state so we don't lose momentum."
+- Open `.specify/specs/001-url-shortener/spec.md` and continue
+
+**Rationale:** The `-f` flag discards partial live output. Slow but still streaming = wait.
+
+---
+
+## 🚨 `/speckit.plan` stalls (no token stream for > 3 min) or errors out
+
+**Symptom:** No token stream for > 3 min, or an explicit error appears.
+
+**Immediate action:**
 - `git checkout -f stage-3-after-plan`
+- Say: "The plan is versioned; I'll continue from the prepared branch."
 - Open `.specify/specs/001-url-shortener/plan.md`, continue as planned
 
+**Rationale:** Slow but still streaming = wait.
+
 ---
 
-## 🚨 `/speckit.tasks` runs longer than 60 sec
+## 🚨 `/speckit.tasks` stalls (no token stream for > 2 min) or errors out
+
+**Symptom:** No token stream for > 2 min, or an explicit error appears.
 
 **Immediate action:**
 - `git checkout -f stage-4-after-tasks`
+- Say: "Tasks are versioned too; I'll continue from the prepared task list."
 - Open `tasks.md`, continue
+
+**Rationale:** Slow but still streaming = wait.
 
 ---
 
-## 🚨 `/speckit.implement` is already running and you want to jump (planned cut!)
+## 🚨 `/speckit.implement` stalls, errors, or hits 30:00
 
-**This is NOT an error — this is choreography.** After watching for 30 sec:
+**Symptom:** No file activity in Explorer **and** no token stream in chat for > 3 minutes; explicit error; or wall-clock 30:00 while still mid-implementation.
 
-1. Click the **Stop button in chat** (red square at the top right of the chat input). Otherwise `/implement` keeps running in the background and consumes quota.
-2. **Say:** "That's it for live implementation — we're jumping to the final state."
-3. **Terminal:** `git checkout -f stage-5-complete`
-4. **Continue** with app demo
+**Immediate action:**
+- Click the **Stop button** in Copilot Chat (red square at the top right of the chat input)
+- `git checkout -f stage-5-complete`
+- Say: "We've seen enough of the live build — let's jump to the finished state."
+- Continue with the app demo (Block 6)
+
+**Rationale:** `/implement` normally takes 5–8 minutes. The agent runs to completion unless it stalls, errors, or would push the demo past 30:00.
 
 ---
 
@@ -111,22 +124,29 @@ flowchart TD
 **Symptom:** Spec suddenly talks about auth, multi-tenancy, etc.
 
 **Immediate action:**
-- Say: "This shows exactly why specs are reviewed — but for the demo I'll show you our reviewed state."
 - `git checkout -f stage-2-after-specify` → continue
+- Say: "This spec needs review; for the demo I'll show the reviewed state."
+
+**Rationale:** Wrong content is a review finding; the emergency parachute keeps the story on track.
 
 ---
 
-## 🚨 Git branch jump fails ("uncommitted changes")
+## 🚨 Emergency parachute branch jump fails ("uncommitted changes")
+
+**Symptom:** Checkout refuses because live commands created or changed files.
 
 **Immediate action:**
-- Always use the `-f` flag: `git checkout -f stage-X-...` (discards working-tree changes)
+- Rerun with `git checkout -f stage-X-...` (discards working-tree changes)
+- Say: "Live demo files are disposable; the branch is the known-good state."
 - If you are paranoid: `git stash` → `git checkout stage-X-...` → later `git stash drop`
 
-**Prevention:** Setup Checklist B3 ensures `git status` is clean **before demo start**. During the demo, live commands create new files — that is expected.
+**Rationale:** Setup Checklist B3 ensures `git status` is clean **before demo start**; after that, live file churn is expected.
 
 ---
 
 ## 🚨 App won't start (`uvicorn` error)
+
+**Symptom:** `uvicorn` errors or the local app will not start.
 
 **Immediate action:**
 - Switch to **Browser tab 1** (port 8001, started as backup in Setup B2)
@@ -140,52 +160,66 @@ flowchart TD
 **Symptom:** Redirect works, but `/stats/{code}` still shows 0.
 
 **Immediate action:**
-- Say: "There is apparently a race condition in the fresh implementation — this is exactly what tests are for."
 - Switch to the backup tab (port 8001) and show the working counter there.
+- Say: "The fresh implementation may have a race condition; this is what tests are for."
 
 ---
 
 ## 🚨 Internet down → Copilot does not respond
 
+**Symptom:** Copilot stops responding because the network is down.
+
 **Immediate action:**
-- Say: "No network, no LLMs — but all artifacts are versioned in the repo. Let's walk through the branches."
 - Switch completely to branch tour, no more live commands
-- Explicitly mention in the Wrap-up: "Specs are reviewable offline — that is part of the value."
+- Say: "No network, no LLMs — but all artifacts are versioned in the repo. Let's walk through the branches."
+- In Wrap-up, say: "Specs are reviewable offline — that is part of the value."
 
 ---
 
-## 🚨 Time is running out — still in Block 5 at 22:00
+## 🚨 Time is running out — past 30:00 and still in Block 5
+
+**Symptom:** Total wall-clock hits 30:00 and `/implement` is still in Block 5.
 
 **Immediate action:**
-- Skip part 5d (implementation branch) completely
-- Directly: `git checkout stage-5-complete` and go to app demo
+- Stop `/implement` (red square in chat input)
+- `git checkout -f stage-5-complete`
+- Say: "We've hit time; I'll use the emergency parachute so you still see the app."
 - Tighten Wrap-up to 90 sec
+
+**Rationale:** Before 30:00, slow but streaming is fine. At 30:00, protect the finish.
 
 ---
 
 ## 🚨 Audience question in the middle of Block 5
 
-**Response strategy:**
-- "Great question — I'll park that in the Q&A list and answer it at the end so we still get to see the app live."
+**Symptom:** Good question appears while `/implement` is still running or Block 5 is under way.
+
+**Immediate action:**
+- Say: "Great question — I'll park that in the Q&A list and answer it at the end so we still get to see the app live."
 - Note the question (pen / sticky note on second screen)
-- **Do not get lost in discussion.** Demo slot is 25 min.
+- Return to the demo immediately
+
+**Rationale:** The demo runs 25–30 min; discussion waits until Q&A.
 
 ---
 
 ## 🚨 Total failure (laptop crash, projector broken, etc.)
 
+**Symptom:** Laptop, projector, or local environment is unusable.
+
 **Immediate action:**
-- Video backup `shortly-demo.mp4` from USB stick on backup device
+- Play video backup `shortly-demo.mp4` from USB stick on backup device
 - If that also fails: tell the story with a whiteboard
   - **Two boxes at the top:** Plan Mode (tactical, in the moment) | SpecKit (strategic, over time)
   - **Pipeline below:** Constitution → Specify → Plan → Tasks → Implement
   - **Takeaway under both:** "The spec is the executable artifact"
+- Say: "Live demos are honest — and reproducibility is exactly the advantage of Spec-Driven."
 
 ---
 
 ## 📜 Universal transition sentences (memorize)
 
-1. "So we don't wait for tokens, let's jump to the deterministic state."
+1. "The agent is stuck — let's jump to the prepared state so we don't lose momentum."
 2. "This is exactly why I version specs — the next state is ready in the branch."
 3. "Live demos are honest — and reproducibility is exactly the advantage of Spec-Driven."
 4. "I'll park this discussion in the Q&A so we still get to see the app."

@@ -1,4 +1,4 @@
-# Python
+﻿# Python
 __pycache__/
 *.py[cod]
 *$py.class
@@ -21,9 +21,6 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnp.*
-
-# Build artifacts from the diagram pipeline
-scripts/results.json
 
 # SQLite (created at runtime by the URL shortener app)
 *.db
