@@ -89,6 +89,18 @@ git checkout -f stage-2-after-specify
 
 ---
 
+## Optional — `/speckit.clarify` (resolve open questions in the spec)
+
+Run between `specify` and `plan` if `spec.md` contains `[NEEDS CLARIFICATION]` markers. Walks the open questions interactively and updates `spec.md` in place.
+
+```
+/speckit.clarify
+```
+
+Skip in the live demo; mention it in Q&A. If you do want to show it, run it right after reviewing the spec and accept/edit the proposed answers as it streams.
+
+---
+
 ## Block 5b — `/speckit.plan` (the tech stack)
 
 ```
@@ -111,6 +123,16 @@ git checkout -f stage-3-after-plan
 
 ---
 
+## Optional — `/speckit.checklist` (domain-specific review checklists)
+
+Run after `plan` to generate an extra review checklist (security, accessibility, performance, …) under `specs/.../checklists/`. Useful for regulated or cross-functional teams; skip in the demo.
+
+```
+/speckit.checklist Focus on security and input validation for the URL shortener.
+```
+
+---
+
 ## Block 5c — `/speckit.tasks` (decompose into steps)
 
 ```
@@ -124,6 +146,18 @@ Parachute (>2 min):
 ```bash
 git checkout -f stage-4-after-tasks
 ```
+
+---
+
+## Optional — `/speckit.analyze` (cross-artifact consistency check)
+
+Runs between `tasks` and `implement`. Checks that every functional requirement in `spec.md` has matching tasks, flags orphan plan decisions, and surfaces inconsistencies before any code is written.
+
+```
+/speckit.analyze
+```
+
+Cheap insurance for non-trivial features — recommend it in Q&A as the "lint your spec before you build" step.
 
 ---
 
@@ -169,11 +203,14 @@ Then browser → `http://localhost:8000` → shorten a URL, click the short code
 ## Quick reference — all slash commands in order
 
 ```
-/speckit.constitution   # project principles (Block 4)
-/speckit.specify        # what & why         (Block 5a)
-/speckit.plan           # how / tech stack   (Block 5b)
-/speckit.tasks          # decomposed steps   (Block 5c)
-/speckit.implement      # generate code      (Block 5d)
+/speckit.constitution   # project principles     (Block 4)
+/speckit.specify        # what & why             (Block 5a)
+/speckit.clarify        # resolve open questions (optional, after specify)
+/speckit.plan           # how / tech stack       (Block 5b)
+/speckit.checklist      # domain review lists    (optional, after plan)
+/speckit.tasks          # decomposed steps       (Block 5c)
+/speckit.analyze        # consistency check      (optional, after tasks)
+/speckit.implement      # generate code          (Block 5d)
 ```
 
 Bonus (team workflow, mentioned in Block 7a):
@@ -181,6 +218,45 @@ Bonus (team workflow, mentioned in Block 7a):
 ```
 /speckit.taskstoissues  # turn tasks.md into GitHub issues
 ```
+
+---
+
+## Audience Q&A — "How do I iterate on a feature I already built?"
+
+> "Refactoring an existing feature is exactly where SDD pays off — the spec is the source of truth, code is the derivative. Two patterns depending on the size of the change:"
+
+**Pattern A — in-place change (small/medium refactor, same feature):**
+
+1. Edit `.specify/specs/001-url-shortener/spec.md` directly (or use chat: *"Update spec.md to add expiry dates to shortened URLs"*).
+2. Regenerate the downstream artifacts in order, keeping the same feature folder:
+
+   ```
+   /speckit.plan       # re-reads the updated spec, refreshes plan.md
+   /speckit.tasks      # regenerates tasks.md against the new plan
+   /speckit.implement  # only runs unchecked [ ] tasks — completed [X] are skipped
+   ```
+
+3. Review the diff on `spec.md` + `plan.md` + `tasks.md` in your PR. Reviewers see *why* the refactor exists, not just *what* changed.
+
+**Pattern B — additive enhancement (new feature folder referencing the old one):**
+
+Use this when the change is large enough to deserve its own PR/story, or when several people work on the original and the enhancement in parallel.
+
+```
+/speckit.specify Add expiry dates to the URL shortener (see specs/001-url-shortener/spec.md).
+Users can set an optional expiry; expired codes return 410 Gone.
+```
+
+SpecKit creates `specs/002-url-expiry/`. The new spec references `001-url-shortener` for context, but it's its own reviewable unit. Run `plan` → `tasks` → `implement` as usual.
+
+**One-liner for the audience:**
+
+> "Code is disposable, the spec lives. To refactor, you edit the spec and re-run the pipeline — Copilot already knows what changed because it's a git diff on `spec.md`."
+
+**Pro tips to mention:**
+- `/speckit.analyze` after editing spec.md catches FRs that are no longer covered by tasks.md.
+- The **Constitution** still applies to refactors — if a new requirement violates a principle, `/speckit.plan` flags it in the Constitution Check.
+- For tiny tweaks (typos, copy changes) you don't need the full pipeline — edit code directly. SDD scales with the size of the change.
 
 ---
 
